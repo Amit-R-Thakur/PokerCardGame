@@ -1,0 +1,437 @@
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body
+{
+    background: rgb(188,34,195);
+background: linear-gradient(0deg, rgba(188,34,195,1) 0%, rgba(163,45,253,0.9671218829328606) 100%);
+}
+
+.main
+{
+    position: relative;
+    height: 100%;
+}
+.div1
+{
+position:absolute;
+border: 3px solid red;
+left:10%;
+right:10%;
+top:15%;
+bottom:15%;
+border-top-left-radius: 40%;
+border-top-right-radius: 40%;
+border-bottom-left-radius: 40%;
+border-bottom-right-radius: 40%;
+background-color: rgba(46, 139, 86, 0.945);
+z-index: -1;
+}
+
+.div2
+{
+border: 2px solid green;
+position:absolute;
+left:8%;
+right:8%;
+top:12%;
+bottom:12%;
+border-top-left-radius: 40%;
+border-top-right-radius: 40%;
+border-bottom-left-radius: 40%;
+border-bottom-right-radius: 40%;
+z-index:-2;
+background-color:#caa472;
+}
+
+
+
+
+.table1
+{
+    position:absolute;
+    left:15%;
+    top:63%;
+    bottom:21%;
+    right: 78%;
+    border: 4px solid yellow;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.883);
+    background-image: url("../images/addUser.jpg");
+    background-size: 100% 100%;
+}
+
+.table2
+{
+    position:absolute;
+    left:15%;
+    top:21%;
+    bottom:63%;
+    right: 78%;
+    border: 4px solid red;
+    border-radius: 50%;
+    overflow: hidden;
+    background-image: url("../images/addUser.jpg");
+    background-size: 100% 100%;
+
+}
+.table3
+{
+    position:absolute;
+    left:78%;
+    top:21%;
+    bottom:63%;
+    right: 15%;
+    border: 4px solid blue;
+    border-radius: 50%;
+    overflow: hidden;
+    background-image: url("../images/addUser.jpg");
+    background-size: 100% 100%;
+}
+.table4
+{
+    position:absolute;
+    left:78%;
+    top:63%;
+    bottom:21%;
+    right: 15%;
+    border: 4px solid black;
+    border-radius: 50%;
+    overflow: hidden;
+    background-image: url("../images/addUser.jpg");
+    background-size: 100% 100%;
+}
+.table5
+{
+    background-image: url("../images/addUser.jpg");
+    background-size: 100% 100%;
+
+}
+.myProfile,.table5
+{
+    position:absolute;
+    left:46%;
+    top:70%;
+    bottom:12%;
+    right: 46%;
+    border: 4px solid goldenrod;
+    border-radius: 50%;
+    overflow: hidden;
+    background-size: 100% 100%;
+}
+.dealer
+{
+    position:absolute;
+    left:45%;
+    top:-1%;
+    bottom:80%;
+    right: 45%;
+    z-index: -2;
+    background-image: url("../images/pngwing.com.png");
+    background-size: 100% 100%;
+}
+#mode1,#mode2,#mode3,#mode4,#mode5
+{
+    background-color: rgba(0, 0, 0, 0.445);
+    height:50%;
+    margin-top:70%;
+}
+#chip1
+{
+    position:absolute;
+    left:15%;
+    top:78%;
+    bottom:17%;
+    right: 78%;
+    background-color: rgba(0, 0, 0, 0.377);
+    padding:0.2%;
+    
+
+}
+#chip1 h1,#chip2 h1,#chip3 h1,#chip4 h1
+{
+    color: white;
+    margin-top: 7%;
+    font-size: 1.3rem;
+    margin-left:21%;
+    font-weight: bold;
+   
+}
+#chip2
+{
+    position:absolute;
+    left:15%;
+    top:36%;
+    bottom:59%;
+    right: 78%;
+    background-color: rgba(0, 0, 0, 0.377);
+
+}
+#chip3
+{
+    position:absolute;
+    left:78%;
+    top:36%;
+    bottom:59%;
+    right: 15%;
+    background-color: rgba(0, 0, 0, 0.377);
+
+}   
+
+#chip4
+{
+    position:absolute;
+    left:78%;
+    top:78%;
+    bottom:17%;
+    right: 15%;
+    background-color: rgba(0, 0, 0, 0.377);
+}
+/* #chip5
+{
+    position:absolute;
+    left:44%;
+    top:85%;
+    bottom:9%;
+    right: 44%;
+    background-color: rgba(0, 0, 0, 0.377);
+
+} */
+.btnMainDiv
+{
+    position:absolute;
+    left:25%;
+    top:88%;
+    bottom:3%;
+    right: 20%;
+    background-color: rgba(0, 0, 0, 0.555);
+    z-index:0;
+    display:grid;
+   grid-template-columns: 20% 1fr 20% 20%;
+
+
+
+}
+
+
+#fold,#call,#raise
+{
+    color: white;
+    height: 80%;
+    width: 80%;
+    margin-left: 7%;
+    margin-top: 5%;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    font-weight: bold;
+    border-radius: 20px;
+    border: none;
+    transition:0.5s linear ease-out;
+    cursor: pointer;
+    background: rgb(36,0,6);
+background: linear-gradient(90deg, rgba(36,0,6,1) 0%, rgba(100,121,9,0.9756945014333859) 35%, rgba(255,0,198,1) 100%);
+}
+#fold:hover,#call:hover,#raise:hover
+{
+    transition:0.5s linear ease;
+    background: rgb(36,0,6);
+background: linear-gradient(90deg, rgba(255,0,198,1) 0%, rgba(100,121,9,0.9756945014333859) 35%,rgba(36,0,6,1)  100%);
+
+}
+
+#raiseIcon i
+{
+    font-size:1.5rem;
+    font-weight: bold;
+  
+}
+.tcoinDiv
+{
+    background-color: rgba(0, 0, 0, 0.746);
+    width: 70%;
+    height: 60%;
+    margin-left: 25%;
+    margin-top: 2%;
+    display: flex;
+}
+.tcoinDiv b
+{
+    color: white;
+    margin-left:35% ;
+    margin-top: 3%;
+    font-size: 1.5rem;
+}
+
+/* CSS  For CardDiv */
+.cardDiv1
+{
+    position: absolute;
+    left:12%;
+    top:55%;
+    bottom:32%;
+    right: 76%;
+    z-index:-1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2%;
+}
+#p1card1,#p2card1,#p3card1,#p4card1,#Mycard1
+{
+    background-color: rgba(0, 0, 0, 0.692);
+    border-radius: 5px;
+    margin-left: 30%;
+}
+#p1card2,#p2card2,#p3card2,#p4card2,#Mycard2
+{
+    background-color: rgba(0, 0, 0, 0.692);
+    border-radius: 5px;
+    margin-right: 30%;
+}
+
+
+.cardDiv2
+{
+    position:absolute;
+    left:12%;
+    top:13%;
+    bottom:74%;
+    right: 76%;
+    z-index:-1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2%;
+}
+
+.cardDiv3
+{
+    position:absolute;
+    left:76%;
+    top:13%;
+    bottom:74%;
+    right: 12%;
+    z-index:-1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2%;
+
+}
+.cardDiv4
+{
+    position: absolute;
+    left:76%;
+    top:55%;
+    bottom:32%;
+    right: 12%;
+    z-index:-1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2%;
+
+}
+.MycardDiv
+{
+    position:absolute;
+    left:43%;
+    top:62%;
+    bottom:24%;
+    right: 43%;
+    z-index: -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2%;
+
+}
+.DealerMainDiv
+{
+    position: absolute;
+    left:40%;
+    right: 40%;
+    top:15%;
+    bottom:65%;
+    z-index: -1;
+    display: grid;
+    grid-template-rows: 30% 1fr;
+   
+
+}
+.DealerCoinDiv
+{
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.coindiv
+{
+    background-color: rgba(0, 0, 0, 0.746);
+    height: 95%;
+    width: 60%;
+    justify-self: center;
+    text-align: center;
+
+}
+.coindiv h1
+{
+    color: white;
+    margin-top: 5%;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.DealerCardDiv
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 2%;
+
+}
+.dealerCard
+{
+    background-color: rgba(0, 0, 0, 0.596);
+    border-radius: 5px;
+}
+.msgBox
+{
+    position: absolute;
+    left:42%;
+    right: 40%;
+    top:38%;
+    bottom: 57%;
+    background-color: rgba(0, 0, 0, 0.472); padding-left:1%;
+    padding-right:1%;
+    text-align: center;
+    border-radius: 40px;
+    border: none;
+
+}
+.msgBox  h2
+{
+    color:white;
+    margin-top: 3%;
+    font-size:1.2rem;
+    font-weight: bold;
+}
+.timerBox
+{
+    position: absolute;
+    left: 56.5%;
+    right: 35%;
+    top:15.5%;
+    bottom: 80%;
+    background-color: rgba(0, 0, 0, 0.534);
+    text-align: center;
+}
+.timerBox h2
+{
+    color:white;
+    margin-top: 3%;
+    font-size:0.9rem;
+    font-weight: bold;
+
+}
+
+
+
+
