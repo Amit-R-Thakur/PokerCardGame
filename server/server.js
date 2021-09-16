@@ -6,14 +6,11 @@ const path=require("path");
 const app=express();
 const server=require("http").createServer(app);
 const io=require("socket.io")(server);
-console.log(io);
 const PORT=3000;
 // console.log(path.join(__dirname ,"../public"));
 app.use(express.static(path.join(__dirname ,"../public")));
-
 app.get("/",(req,res)=>{
     res.sendFile(path.join(__dirname ,"../public"));
-
 });
 // const getVisitor=()=>{
 //     let client=io.sockets.client().connected;
@@ -74,7 +71,9 @@ function setCard(user)
     }
 
 }
-//Game started or Not.....................
+//Function For PlayGame.......
+
+   //Game started or Not.....................
 let start=false;
 
 
@@ -82,9 +81,8 @@ let start=false;
 io.on("connection",(socket)=>
 {
    
-    console.log("user join");
+   
     socket.on("newUser",(Name)=>{
-       
        
         console.log(`${Name} Joined`);
         socket.emit("userJoin",Name);
@@ -97,10 +95,8 @@ io.on("connection",(socket)=>
         socket.emit("sendBookedTableByServer",bookedTable,bookedImage);
         
         user[socket.id]=Name;
-        console.log(Object.keys(user).length);
         socket.emit("sendUser",user);
-         console.log(userCard);
-         if(Object.keys(user).length>4)
+         if(Object.keys(user).length>0)
          {
              let time=5;
              let send;
@@ -112,20 +108,40 @@ io.on("connection",(socket)=>
 
              }
          
-          function sendTimeToAll()
+             async function sendTimeToAll()
           {
               socket.emit("sendTime",time);
               socket.broadcast.emit("sendTime",time);
               
               if(time==0)
               {
-
+                 
                 socket.emit("sendGameStartMessage",time);
                 socket.broadcast.emit("sendGameStartMessage");
                   clearInterval(send);
                   setCard(user);
                   socket.emit("cardDistribution",userCard);
                   socket.broadcast.emit("cardDistribution",userCard);
+                 
+                  let Round=0;
+                  while(Round!=5)
+                  {
+                    
+                  for(let i=0;i<userCard.length;i++)
+                  {
+                      console.log("amit");
+                      socket.emit("PlayGame",userCard);
+                      socket.broadcast.emit("PlayGame",userCard);
+                      socket.on("RecevedCoin",(data,data2)=>{
+                             console.log(data,data2);
+                        })
+                       
+                      Round++;
+                      console.log(Round);
+
+                  }
+                }
+
 
               }
               time--;
@@ -142,7 +158,6 @@ io.on("connection",(socket)=>
     
     let ChangesTable;
     socket.on("ChangesTable",(data2)=>{
-            console.log(data2);
             ChangesTable=data2;
         })
     socket.on("SendBookedTableList",(data)=>{

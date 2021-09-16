@@ -109,8 +109,22 @@ let Name=prompt("Enter Your Name to Join");
 socket.emit("newUser",Name);
 
 
+
 socket.on("userJoin",(data)=>
 {
+    socket.on("PlayGame",(data)=>{
+        data.forEach((elm)=>{
+        if(elm.userId==socket.id)
+        {
+            document.querySelector(".btnMainDiv").classList.remove("none");
+            let BetCoin=document.querySelector("#rs").innerText;
+           document.querySelector("#call").addEventListener("click",()=>{
+            socket.emit("RecevedCoin",socket.id,BetCoin);
+           })
+        }
+
+        })
+    })
     socket.on("gameStartedOrNot",(data)=>{
         console.log(data);
         sendGameStartMessage(data);

@@ -211,6 +211,7 @@ background-color:#caa472;
     z-index:0;
     display:grid;
    grid-template-columns: 20% 1fr 20% 20%;
+   
 
 
 
@@ -433,6 +434,11 @@ background: linear-gradient(90deg, rgba(255,0,198,1) 0%, rgba(100,121,9,0.975694
     font-size:0.9rem;
     font-weight: bold;
 
+}
+
+.none
+{
+    display: none;
 }
 
 

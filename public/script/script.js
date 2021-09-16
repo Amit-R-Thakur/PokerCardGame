@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     function boardButton()
     {
         let btnMainDiv=document.createElement("div");
-        btnMainDiv.classList.add("btnMainDiv");
+        btnMainDiv.classList.add("none","btnMainDiv");
         mainDiv.appendChild(btnMainDiv);
         let foldBtnDiv=document.createElement("div");
         foldBtnDiv.classList.add("foldBtnDiv");
