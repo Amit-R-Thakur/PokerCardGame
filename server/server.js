@@ -41,11 +41,7 @@ app.get("/",(req,res)=>{
       }
   }
 //................Deck is Created..................
-//Function for Return Card Image Url.........
-function ReturnCardImageUrl(card)
-{
-    return `../CardImage/${card}.png`;
-}
+
 //Function For return Random Card and Remove that Card...........
 function ReturnRandomCard()
 {
@@ -69,14 +65,17 @@ function setCard(user)
         let userId=i;
         let card1=ReturnRandomCard();
         let card2=ReturnRandomCard();
+        let table=bookedTable[userId];
         let obj={};
-        obj["userId"]=userId,obj["card1"]=card1,obj["card2"]=card2;
+        obj["userId"]=userId,obj["card1"]=card1,obj["card2"]=card2,obj["table"]=table;
         userCard.push(obj);
         
 
     }
 
 }
+//Game started or Not.....................
+let start=false;
 
 
 
@@ -86,8 +85,14 @@ io.on("connection",(socket)=>
     console.log("user join");
     socket.on("newUser",(Name)=>{
        
+       
         console.log(`${Name} Joined`);
         socket.emit("userJoin",Name);
+        if(start==true)
+        {
+            let msg="please Wait....";
+            socket.emit("gameStartedOrNot",msg);
+        }
         socket.broadcast.emit("sendMessge",Name);
         socket.emit("sendBookedTableByServer",bookedTable,bookedImage);
         
@@ -95,10 +100,18 @@ io.on("connection",(socket)=>
         console.log(Object.keys(user).length);
         socket.emit("sendUser",user);
          console.log(userCard);
-         if(Object.keys(user).length>1)
+         if(Object.keys(user).length>4)
          {
-             let time=5
-          let send=setInterval(sendTimeToAll,1000);
+             let time=5;
+             let send;
+            
+             if(start==false)
+             {
+                 send=setInterval(sendTimeToAll,1000);
+                start=true;
+
+             }
+         
           function sendTimeToAll()
           {
               socket.emit("sendTime",time);
@@ -106,6 +119,7 @@ io.on("connection",(socket)=>
               
               if(time==0)
               {
+
                 socket.emit("sendGameStartMessage",time);
                 socket.broadcast.emit("sendGameStartMessage");
                   clearInterval(send);

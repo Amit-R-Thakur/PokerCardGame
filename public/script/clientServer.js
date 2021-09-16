@@ -2,6 +2,7 @@
 let PrfImageList=["../images/face1.jpg","../images/face2.jpg","../images/face3.jpg","../images/face4.jpg","../images/face5.jpg","../images/face6.jpg","../images/face7.jpg","../images/face8.jpg","../images/face9.jpg","../images/face10.jpg","../images/face11.jpg","../images/face12.jpg","../images/face13.jpg"];
 let table=["table1","table2","table3","table4","table5"];
 let addProfileImage="../images/addUser.jpg";
+let backSideOfCardIs="../CardImage/blue_back.png";
 let MyChangesTable;
 //Function For reaturn random Table..........
 function RandomTable()
@@ -61,6 +62,43 @@ function sendGameStartMessage(msg)
 {
     document.querySelector("#h2").innerText=msg;
 }
+//Function For return table class....
+function returnTableClass(table)
+{
+    let Newtable;
+    if(table=="table1")Newtable="t1";
+    else if(table=="table2")Newtable="t2";
+    else if(table=="table3")Newtable="t3";
+    else if(table=="table4")Newtable="t4";
+    else if(table=="table5")Newtable="t5";
+    return Newtable;
+}
+//Function For return Card Id.........
+function returnCardId(table)
+{
+    let num;
+    if(table=="t1")num=1;
+    else if(table=="t2")num=2;
+    else if(table=="t3")num=3;
+    else if(table=="t4")num=4;
+    else if(table=="t5")num=5;
+    let card={};
+    card["card1"]=`p${num}card1`;
+    card["card2"]=`p${num}card2`;
+    if(num==5)
+    {
+        card["card1"]=`Mycard1`;
+    card["card2"]=`Mycard2`;
+        
+    }
+   return card;
+
+}
+//Function for Return Card Image Url.........
+function ReturnCardImageUrl(card)
+{
+    return `../CardImage/${card}.png`;
+}
 
 
 let socket =io();
@@ -70,6 +108,11 @@ socket.emit("newUser",Name);
 
 socket.on("userJoin",(data)=>
 {
+    socket.on("gameStartedOrNot",(data)=>{
+        console.log(data);
+        sendGameStartMessage(data);
+
+    })
     socket.on("sendTime",(data)=>{
         setTime(data);
     })
@@ -79,7 +122,34 @@ socket.on("userJoin",(data)=>
     })
     let msg=`welcome ${data}`;
     Message(msg);
-    socket.on("cardDistribution",(data)=>{console.log(data)});
+    socket.on("cardDistribution",(data)=>{
+      
+        data.forEach((elm)=>{
+         if(elm.userId==socket.id)
+         {
+            let table=returnTableClass(elm.table);
+            let cardLocation=returnCardId("t5");
+            let card1=ReturnCardImageUrl(elm.card1);
+            let card2=ReturnCardImageUrl(elm.card2);
+            console.log(cardLocation);
+            console.log(cardLocation.card1);
+            document.querySelector(`#Mycard1`).style.backgroundImage=`url("${card1}")`;
+            document.querySelector(`#Mycard2`).style.backgroundImage=`url("${card2}")`;
+
+         }
+         else
+         {
+            let table=returnTableClass(elm.table);
+            let cardLocation=returnCardId(table);
+            document.querySelector(`#${cardLocation.card1}`).style.backgroundImage=`url("${backSideOfCardIs}")`;
+            document.querySelector(`#${cardLocation.card2}`).style.backgroundImage=`url("${backSideOfCardIs}")`;
+
+         }
+
+        })
+        
+    
+    });
    
     socket.on("sendMessge",(data)=>{
         let msg=`${data} join the table.`;
@@ -130,7 +200,20 @@ socket.on("userJoin",(data)=>
     let RImage=RandomProfileImage();
     let Mytable=document.querySelector(`.${Rtable}`);
     let table5=document.querySelector(".table5");
-
+    let card1=document.querySelector(`#Mycard1`);
+    let card2=document.querySelector(`#Mycard1`);
+    let Rcard=returnCardId(returnTableClass(Rtable));
+    
+    card1.classList.remove("#Mycard1");
+    card2.classList.remove("#Mycard2");
+    card1.classList.add(Rcard.card1);
+    card2.classList.add(Rcard.card2);
+    let Rcard1=document.querySelector(`#${Rcard.card1}`);
+    let Rcard2=document.querySelector(`#${Rcard.card2}`);
+    Rcard1.classList.remove(Rcard.card1);
+    Rcard2.classList.remove(Rcard.card2);
+    Rcard1.classList.add("Mycard1");
+    Rcard2.classList.add("Mycard2");
     table5.classList.remove("table5");
     table5.classList.add(Rtable);
     Mytable.classList.remove(Rtable);

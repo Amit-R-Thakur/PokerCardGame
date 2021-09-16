@@ -283,13 +283,16 @@ background: linear-gradient(90deg, rgba(255,0,198,1) 0%, rgba(100,121,9,0.975694
     background-color: rgba(0, 0, 0, 0.692);
     border-radius: 5px;
     margin-left: 30%;
+    background-size: 100% 100%;
 }
 #p1card2,#p2card2,#p3card2,#p4card2,#Mycard2
 {
     background-color: rgba(0, 0, 0, 0.692);
     border-radius: 5px;
     margin-right: 30%;
+    background-size: 100% 100%;
 }
+
 
 
 .cardDiv2
