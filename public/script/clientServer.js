@@ -4,6 +4,9 @@ let table=["table1","table2","table3","table4","table5"];
 let addProfileImage="../images/addUser.jpg";
 let backSideOfCardIs="../CardImage/blue_back.png";
 let MyChangesTable;
+let MyChangesCard1;
+let MyChangesCard2;
+
 //Function For reaturn random Table..........
 function RandomTable()
 {
@@ -139,10 +142,20 @@ socket.on("userJoin",(data)=>
          }
          else
          {
+             if(elm.table=="table5")
+             {
+                document.querySelector(`#${MyChangesCard1}`).style.backgroundImage=`url("${backSideOfCardIs}")`;
+                document.querySelector(`#${MyChangesCard2}`).style.backgroundImage=`url("${backSideOfCardIs}")`;
+               
+
+             }
+             else
+             {
             let table=returnTableClass(elm.table);
             let cardLocation=returnCardId(table);
             document.querySelector(`#${cardLocation.card1}`).style.backgroundImage=`url("${backSideOfCardIs}")`;
             document.querySelector(`#${cardLocation.card2}`).style.backgroundImage=`url("${backSideOfCardIs}")`;
+           }
 
          }
 
@@ -203,7 +216,8 @@ socket.on("userJoin",(data)=>
     let card1=document.querySelector(`#Mycard1`);
     let card2=document.querySelector(`#Mycard1`);
     let Rcard=returnCardId(returnTableClass(Rtable));
-    
+    MyChangesCard1=Rcard.card1;
+    MyChangesCard2=Rcard.card2;
     card1.classList.remove("#Mycard1");
     card2.classList.remove("#Mycard2");
     card1.classList.add(Rcard.card1);
