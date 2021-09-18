@@ -396,6 +396,10 @@ background: linear-gradient(90deg, rgba(255,0,198,1) 0%, rgba(100,121,9,0.975694
     background-color: rgba(0, 0, 0, 0.596);
     border-radius: 5px;
 }
+#dealerCard1,#dealerCard2,#dealerCard3,#dealerCard4,#dealerCard5
+{
+    background-size: 100% 100%;
+}
 .msgBox
 {
     position: absolute;
@@ -420,21 +424,27 @@ background: linear-gradient(90deg, rgba(255,0,198,1) 0%, rgba(100,121,9,0.975694
 .timerBox
 {
     position: absolute;
-    left: 56.5%;
-    right: 35%;
-    top:15.5%;
-    bottom: 80%;
+    left:42%;
+    right: 40%;
+    top:45%;
+    bottom: 50%;
     background-color: rgba(0, 0, 0, 0.534);
     text-align: center;
+    border-radius: 40px;
 }
+
+
 .timerBox h2
 {
     color:white;
     margin-top: 3%;
     font-size:0.9rem;
     font-weight: bold;
+    margin-left: 2%;
+    margin-right: 2%;
 
 }
+
 
 .none
 {

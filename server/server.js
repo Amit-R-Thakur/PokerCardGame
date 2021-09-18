@@ -30,10 +30,19 @@ let deck = [];
 //     Hearts,Clubs,Diamonds,Spades
 let symbol = ["H", "C", "D", "S"];
 let Ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+//Function For set Deck.......
+function setDeck()
+{
 for (let i = 0; i < symbol.length; i++) {
     for (let j = 0; j < Ranks.length; j++) {
         deck.push(`${Ranks[j]}${symbol[i]}`);
     }
+}
+}
+//Function For clear Deck........
+function ClearDeck()
+{
+    deck.splice(0,deck.length);
 }
 //................Deck is Created..................
 
@@ -51,6 +60,7 @@ let user = {};
 let bookedTable = {};
 let bookedImage = {};
 let userCard = [];
+let DealerCard={};
 let BetCoinByuser={};
 
 //Function For set Card For User...........
@@ -68,6 +78,24 @@ function setCard(user) {
     }
 
 }
+//Function For set Dealer Card............
+function DealerCards()
+{
+    let card1=ReturnRandomCard();
+    let card2=ReturnRandomCard();
+    let card3=ReturnRandomCard();
+    let card4=ReturnRandomCard();
+    let card5=ReturnRandomCard();
+    DealerCard["card1"]=card1,DealerCard["card2"]=card2,DealerCard["card3"]=card3,DealerCard["card4"]=card4,DealerCard["card5"]=card5;
+}
+//Function for clear DealerCards
+function DeleteDealerCards()
+{
+    for(i in DealerCard)
+    {
+        delete DealerCard[i];
+    }
+}
 //Function For PlayGame.......
 
 //Game started or Not.....................
@@ -84,7 +112,13 @@ io.on("connection", (socket) => {
         socket.emit("userJoin", Name);
         if (start == true) {
             let msg = "please Wait....";
-            socket.emit("gameStartedOrNot", msg);
+            socket.emit("gameStartedOrNot", msg,false);
+        }
+        else
+        {
+           let msg="";
+            socket.emit("gameStartedOrNot", msg,true);
+
         }
         socket.broadcast.emit("sendMessge", Name);
         socket.emit("sendBookedTableByServer", bookedTable, bookedImage);
@@ -175,8 +209,8 @@ io.on("connection", (socket) => {
                 let send;
 
                 if (start == false) {
-                    send = setInterval(sendTimeToAll, 1000);
                     start = true;
+                    send = setInterval(sendTimeToAll, 1000);
 
                 }
 
@@ -184,18 +218,53 @@ io.on("connection", (socket) => {
                     socket.emit("sendTime", time);
                     socket.broadcast.emit("sendTime", time);
                     if (time == 0) {
-
                         socket.emit("sendGameStartMessage", time);
                         socket.broadcast.emit("sendGameStartMessage");
                         clearInterval(send);
+                        setDeck();
                         setCard(user);
+                        DealerCards();
                         socket.emit("cardDistribution", userCard);
                         socket.broadcast.emit("cardDistribution", userCard);
+                        socket.emit("DisplayAllPlayBtn");
+                        socket.broadcast.emit("DisplayAllPlayBtn");
+                        let Timer=30;
+                        let ResultTimer=setInterval(ResultTimerFunction,1000);
+                        function ResultTimerFunction()
+                        {
+                            socket.emit("ResultTimerFunction",Timer);
+                            socket.broadcast.emit("ResultTimerFunction",Timer);
+                            if(Timer==20)
+                            {
+                                socket.emit("SendThreeCardToDealer",DealerCard.card1,DealerCard.card2,DealerCard.card3);
+                                socket.broadcast.emit("SendThreeCardToDealer",DealerCard.card1,DealerCard.card2,DealerCard.card3);
+                            }
+                            if(Timer==15)
+                            {
+                                socket.emit("SendFourthCardToDealer",DealerCard.card4);
+                                socket.broadcast.emit("SendFourthCardToDealer",DealerCard.card4);
+
+                            }
+                            if(Timer==10)
+                            {
+                                socket.emit("SendFivethCardToDealer",DealerCard.card4);
+                                socket.broadcast.emit("SendFivethCardToDealer",DealerCard.card4);
+
+                            }
+                            
+                            if(Timer==0)
+                            {
+                                
+                                start = false;
+                                ClearDeck();
+                                clearInterval(ResultTimer);
+
+                            }
+                            Timer--;
+
+                        }
 
                     }
-
-
-
                     time--;
                 }
 
@@ -210,6 +279,8 @@ io.on("connection", (socket) => {
     
 
     ///////Logic For Receved Coin From Client......
+    //Function For Manage Coin
+   
     socket.on("BetCoin",(data)=>{
         
         if(BetCoinByuser[data.userId])
@@ -225,9 +296,10 @@ io.on("connection", (socket) => {
         sendUserData["Coin"]=BetCoinByuser[data.userId];
         socket.broadcast.emit("BetCoinByUsers",sendUserData);
         socket.emit("BetCoinBySelf",sendUserData);
-        
+        socket.emit("AddBetCoinToDealer",data.BetCoin);
+       socket.broadcast.emit("AddBetCoinToDealer",data.BetCoin);
       
-    })
+})
 
 
 

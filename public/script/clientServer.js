@@ -1,5 +1,5 @@
 let socket = io();
-
+let inGame;
 let rupeesIcon=`<i class="fas fa-rupee-sign"></i>`;
 //Array For Profile Image 
 let PrfImageList = ["../images/face1.jpg", "../images/face2.jpg", "../images/face3.jpg", "../images/face4.jpg", "../images/face5.jpg", "../images/face6.jpg", "../images/face7.jpg", "../images/face8.jpg", "../images/face9.jpg", "../images/face10.jpg", "../images/face11.jpg", "../images/face12.jpg", "../images/face13.jpg"];
@@ -72,15 +72,14 @@ function Message(msg) {
     mainBox.innerHTML = `<h2>${msg}</h2>`;
 }
 //Function For set Time For Starting game......
-function setTime(tm) {
-    let spn = document.querySelector("#time");
-    console.log(spn);
-    spn.innerText = tm;
+function setTime(msg) {
+    let spn = document.querySelector("#TimerMsg");
+    spn.innerText=msg;
 
 }
 //Function  for set Game Start Message.............
 function sendGameStartMessage(msg) {
-    document.querySelector("#h2").innerText = msg;
+    document.querySelector("#TimerMsg").innerText = msg;
 }
 //Function For return table class....
 function returnTableClass(table) {
@@ -148,16 +147,19 @@ socket.on("PlayGame2",(data)=>{
 socket.emit("RecevedCoin",socket.id,BetCoin);
 
 
-socket.on("userJoin", (data) => {
 
-   
-    socket.on("gameStartedOrNot", (data) => {
+socket.on("userJoin", (data) => {
+    socket.on("gameStartedOrNot", (data,data2) => {
         console.log(data);
         sendGameStartMessage(data);
-
+        console.log(data2);
+        inGame=data2;
+    
     })
+  
     socket.on("sendTime", (data) => {
-        setTime(data);
+        let msg=`game start in ${data}s`;
+        setTime(msg);
     })
     socket.on("sendGameStartMessage", (data) => {
         let msg = `game Started`;
@@ -286,10 +288,6 @@ socket.on("userLeft", (data) => {
     Message(msg);
 });
 
-
-
-
-
 socket.on("UpdateTableAndImage", (data, data2) => {
     let tbl = data;
     let img = data2;
@@ -297,6 +295,7 @@ socket.on("UpdateTableAndImage", (data, data2) => {
     PrfImageList.push(img);
     document.querySelector(`.${tbl}`).style.backgroundImage = `url("${addProfileImage}")`;
 });
+
 socket.on("BetCoinByUsers",(data)=>{
     let msg=`${data.Name} calls  ${rupeesIcon} ${data.Coin}`;
     Message(msg);
@@ -306,9 +305,58 @@ socket.on("BetCoinByUsers",(data)=>{
 socket.on("BetCoinBySelf",(data)=>{
     let msg=`You calls  ${rupeesIcon}${data.Coin}`;
     Message(msg);
+});
 
+socket.on("AddBetCoinToDealer",(data)=>{
+    document.querySelector("#dealer").innerText=Number(document.querySelector("#dealer").innerText)+data;
+})
+socket.on("DisplayAllPlayBtn",()=>{
+    if(inGame==true)
+    document.querySelector(".btnMainDiv").classList.remove("none");
+})
+socket.on("ResultTimerFunction",(data)=>{
+    if(inGame==true)
+      {
+    let msg=`Bet Your Coin! Your Time End in ${data}s`;
+    setTime(msg);
+      }
+})
+socket.on("SendThreeCardToDealer",(card1,card2,card3)=>{
+    if(inGame==true)
+    {
+    console.log(card1);
+   let card1Url=ReturnCardImageUrl(card1);
+   let card2Url=ReturnCardImageUrl(card2);
+   let card3Url=ReturnCardImageUrl(card3);
+   document.querySelector("#dealerCard1").style.backgroundImage=`url("${card1Url}")`;
+   document.querySelector("#dealerCard2").style.backgroundImage=`url("${card2Url}")`;
+   document.querySelector("#dealerCard3").style.backgroundImage=`url("${card3Url}")`;
+    }
 
 });
+
+socket.on("SendFourthCardToDealer",(card4)=>{
+    if(inGame==true)
+    {
+    
+   let card4Url=ReturnCardImageUrl(card4);
+   document.querySelector("#dealerCard4").style.backgroundImage=`url("${card4Url}")`;
+    }
+
+})
+
+socket.on("SendFivethCardToDealer",(card5)=>{
+    if(inGame==true)
+    {
+    
+   let card5Url=ReturnCardImageUrl(card5);
+   document.querySelector("#dealerCard5").style.backgroundImage=`url("${card5Url}")`;
+    }
+
+})
+
+
+
 
 
 

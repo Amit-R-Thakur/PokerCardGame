@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     {
         let div=document.createElement("div");
         div.classList.add("timerBox");
-        let msg=`<h2 id="h2"><span id="mssg">game start in </span><span id="time">5</span>s</h2>`;
+        let msg=`<h2 id="TimerMsg"></h2>`;
         div.innerHTML=msg;
         mainDiv.appendChild(div);
 
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     function boardButton()
     {
         let btnMainDiv=document.createElement("div");
-        btnMainDiv.classList.add("btnMainDiv");
+        btnMainDiv.classList.add("none","btnMainDiv");
         mainDiv.appendChild(btnMainDiv);
         let foldBtnDiv=document.createElement("div");
         foldBtnDiv.classList.add("foldBtnDiv");
