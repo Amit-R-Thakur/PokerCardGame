@@ -221,7 +221,27 @@ function IsFullHouseOrNot(Ranks)
 
 }
 
+//Function For Check Card is Flush Or Not...........
+function IsFlushOrNot(Symbol)
+{
+    for(let i=0;i<Symbol.length;i++)
+    {
+        let count=0;
+        for(let j=0;j<Symbol.length;j++)
+        {
+            if(Symbol[i]==Symbol[j])
+            {
+                count++;
+            }
 
+        }
+        if(count==5)
+        {
+            return 5;
+        }
+    }
+    return 0;
+}
 
 
 
