@@ -176,6 +176,53 @@ function FourOfKindOrNot(Ranks)
     }
     return 0;
 }
+//Function For card is Full House Or Not.............
+function IsFullHouseOrNot(Ranks)
+{
+    let UniqueRanks=Ranks.filter((elm,i,arr)=>{ return arr.indexOf(elm)==i;});
+    let NewCard={};
+    for(let i=0;i<UniqueRanks.length;i++)
+    {
+        let count=0;
+        for(let j=0;j<Ranks.length;j++)
+        {
+            if(UniqueRanks[i]==Ranks[j])
+            {
+                count++;
+            }
+        }
+        NewCard[`${UniqueRanks[i]}`]=count;
+
+    }
+    let four=false,Two=false;
+    for(let i in NewCard)
+    {
+        if(NewCard[i]==4)
+        {
+            four=true;
+            delete NewCard[i];
+            break;
+        }
+    }
+    for(let i in NewCard)
+    {
+        if(NewCard[i]==2)
+        {
+            Two=true;
+
+            break;
+        }
+    }
+    if(four&&Two)
+    {
+        return 4;
+    }
+    return 0;
+
+}
+
+
+
 
 
 
