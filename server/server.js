@@ -264,6 +264,27 @@ function IsSequance(Ranks)
     }
     return 0;
 }
+//Function For Check Three of kind .................
+function IsThreeOfKind(Ranks)
+{
+    for(let i=0;i<Ranks.length;i++)
+    {
+        let count=0;
+        for(let j=0;j<Ranks.length;j++)
+        {
+            if(Ranks[i]==Ranks[j])
+            {
+                count++;
+            }
+        }
+        if(count==3)
+        {
+            return 7;
+        }
+    }
+    return 0;
+}
+
 
 
 
