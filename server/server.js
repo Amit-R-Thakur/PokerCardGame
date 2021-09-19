@@ -76,15 +76,15 @@ function RoundWinner(userCard,DealerCard)
        elm["card7"]=DealerCard.card5;
    });
    userCard.forEach((elm)=>{
-       let Ranks=[];
+       let RanksTemp=[];
        let Symbol=[];
-       Ranks.push(elm["card1"].charAt(0));
-       Ranks.push(elm["card2"].charAt(0));
-       Ranks.push(elm["card3"].charAt(0));
-       Ranks.push(elm["card4"].charAt(0));
-       Ranks.push(elm["card5"].charAt(0));
-       Ranks.push(elm["card6"].charAt(0));
-       Ranks.push(elm["card7"].charAt(0));
+       RanksTemp.push(elm["card1"].charAt(0));
+       RanksTemp.push(elm["card2"].charAt(0));
+       RanksTemp.push(elm["card3"].charAt(0));
+       RanksTemp.push(elm["card4"].charAt(0));
+       RanksTemp.push(elm["card5"].charAt(0));
+       RanksTemp.push(elm["card6"].charAt(0));
+       RanksTemp.push(elm["card7"].charAt(0));
        Symbol.push(elm["card1"].charAt(1));
        Symbol.push(elm["card2"].charAt(1));
        Symbol.push(elm["card3"].charAt(1));
@@ -92,6 +92,13 @@ function RoundWinner(userCard,DealerCard)
        Symbol.push(elm["card5"].charAt(1));
        Symbol.push(elm["card6"].charAt(1));
        Symbol.push(elm["card7"].charAt(1));
+
+
+
+     
+
+
+
       
        //Function For Check Royal Flush or Not
        function IsRoyalFlush(Ranks,Symbol)
@@ -332,6 +339,21 @@ function IsOnePair(Ranks)
     
     }
     return 0;
+}
+//Function For High Card...............
+function IsHighCard(RanksTemp)
+{
+    let IndxNum=[];
+    for(let i=0;i<RanksTemp.length;i++)
+    {
+            IndxNum.push(Number(Ranks.indexOf(RanksTemp[i])));
+    }
+    
+    IndxNum=IndxNum.sort((a,b)=>a-b);
+     
+     let HighRank=IndxNum[IndxNum.length-1];
+     return Ranks[HighRank];
+
 }
 
 
