@@ -311,6 +311,28 @@ function IsTwoPair(Ranks)
     }
     return 0;
 }
+// Function For Check Card Is One Pair Or Not.
+function IsOnePair(Ranks)
+{
+    for(let i=0;i<Ranks.length;i++)
+    {
+        let Count=0;
+        for(let j=0;j<Ranks.length;j++)
+        {
+            if(Ranks[i]==Ranks[j])
+            {
+                Count++;
+            }
+
+        }
+        if(Count==2)
+        {
+            return 9;
+        }
+    
+    }
+    return 0;
+}
 
 
 
