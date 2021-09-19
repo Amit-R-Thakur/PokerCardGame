@@ -284,7 +284,33 @@ function IsThreeOfKind(Ranks)
     }
     return 0;
 }
+//Function For Check card is Two Pair Or Not
+function IsTwoPair(Ranks)
+{
+    let NewArr=[];
+    for(let i=0;i<Ranks.length;i++)
+    {
+        let Count=0;
+        for(let j=0;j<Ranks.length;j++)
+        {
+            if(Ranks[i]==Ranks[j])
+            {
+                Count++;
+            }
 
+        }
+        if(Count==2)
+        {
+            NewArr.push(Ranks[i]);
+        }
+    
+    }
+    if(NewArr.length>1)
+    {
+        return 8;
+    }
+    return 0;
+}
 
 
 
