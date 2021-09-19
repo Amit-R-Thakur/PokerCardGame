@@ -122,6 +122,60 @@ function RoundWinner(userCard,DealerCard)
        }
 
        //Function For Check Straight flush and Pure sequence
+ function IsStraightFlushAndPureSequenceOrNot(Ranks,Symbol)
+  {
+    for(let i=0;i<Symbol.length;i++)
+    {
+        let Count=0;
+        for(let j=0;j<Symbol.length;j++)
+        {
+            if(Symbol[i]==Symbol[j])
+            {
+                Count++;
+            }
+
+        }
+        if(Count==5)
+        {
+            let Sequence=true;
+            for(let k=0;k<Ranks.length-1;k++)
+            {
+                if(Number(Ranks[k+1])!=Number(Ranks[k])+1)
+                {
+                    Sequence=false;
+                    break;
+                }
+            }
+            let TempCard=Ranks.sort().join("");
+            if(Sequence==true||TempCard=="109JKQ")
+            {
+                return 2;
+            }
+        }
+    }
+    return 0;
+} 
+//Function for Check Four Of a Kind or Not..............
+function FourOfKindOrNot(Ranks)
+{
+    for(let i=0;i<Ranks.length;i++)
+    {
+        let Count=0;
+        for(let j=0;j<Ranks.length;j++)
+        {
+            if(Ranks[i]==Ranks[j])
+            {
+                Count++;
+            }
+
+        }
+        if(Count==4)
+        {
+            return 3;
+        }
+    }
+    return 0;
+}
 
 
 
