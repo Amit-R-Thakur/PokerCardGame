@@ -63,6 +63,73 @@ let userCard = [];
 let DealerCard={};
 let BetCoinByuser={};
 
+//Function For Confirm Who Is Winner........
+function RoundWinner(userCard,DealerCard)
+{
+    let userResult=[];
+    //Merging The User Card and Dealer Card
+   userCard.forEach((elm)=>{
+       elm["card3"]=DealerCard.card1;
+       elm["card4"]=DealerCard.card2;
+       elm["card5"]=DealerCard.card3;
+       elm["card6"]=DealerCard.card4;
+       elm["card7"]=DealerCard.card5;
+   });
+   userCard.forEach((elm)=>{
+       let Ranks=[];
+       let Symbol=[];
+       Ranks.push(elm["card1"].charAt(0));
+       Ranks.push(elm["card2"].charAt(0));
+       Ranks.push(elm["card3"].charAt(0));
+       Ranks.push(elm["card4"].charAt(0));
+       Ranks.push(elm["card5"].charAt(0));
+       Ranks.push(elm["card6"].charAt(0));
+       Ranks.push(elm["card7"].charAt(0));
+       Symbol.push(elm["card1"].charAt(1));
+       Symbol.push(elm["card2"].charAt(1));
+       Symbol.push(elm["card3"].charAt(1));
+       Symbol.push(elm["card4"].charAt(1));
+       Symbol.push(elm["card5"].charAt(1));
+       Symbol.push(elm["card6"].charAt(1));
+       Symbol.push(elm["card7"].charAt(1));
+      
+       //Function For Check Royal Flush or Not
+       function IsRoyalFlush(Ranks,Symbol)
+       {
+          for(let i=0;i<Symbol.length;i++)
+          {
+               let count=0;
+              for(let j=0;j<Symbol.length;j++)
+                {
+                   if(Symbol[i]==Symbol[j])
+                   {
+                       count++;
+                   }
+
+               }
+       
+               if(count==5)
+               {
+                   let card=Ranks.sort().join("");
+                   if(card=="10AJKQ")
+                   {
+                    return 1;
+                   }
+               }
+           }
+           return 0;
+
+       }
+
+       //Function For Check Straight flush and Pure sequence
+
+
+
+
+       
+    })
+}
+
 //Function For set Card For User...........
 function setCard(user) {
     for (let i in user) {
@@ -127,65 +194,6 @@ io.on("connection", (socket) => {
         socket.emit("sendUser", user);
 
 
-        //  if(Object.keys(user).length>0)
-        //  {
-        //      let time=5;
-        //      let send;
-
-        //      if(start==false)
-        //      {
-        //          send=setInterval(sendTimeToAll,1000);
-        //         start=true;
-
-        //      }
-
-        //      async function sendTimeToAll()
-        //   {
-        //       socket.emit("sendTime",time);
-        //       socket.broadcast.emit("sendTime",time);
-
-        //       if(time==0)
-        //       {
-
-        //         socket.emit("sendGameStartMessage",time);
-        //         socket.broadcast.emit("sendGameStartMessage");
-        //           clearInterval(send);
-        //           setCard(user);
-        //           socket.emit("cardDistribution",userCard);
-        //           socket.broadcast.emit("cardDistribution",userCard);
-
-        //           let Round=0;
-        //           while(Round!=5)
-        //           {
-
-        //           for(let i=0;i<userCard.length;i++)
-        //           {
-        //               console.log("amit");
-        //               socket.emit("PlayGame",userCard);
-        //               socket.broadcast.emit("PlayGame",userCard);
-        //               socket.on("RecevedCoin",(data,data2)=>{
-        //                      console.log(data,data2);
-        //                 })
-
-        //               Round++;
-        //               console.log(Round);
-
-        //           }
-        //         }
-
-
-        //       }
-        //       time--;
-
-        //   }
-
-
-
-
-        // }
-
-
-
         let ChangesTable;
         socket.on("ChangesTable", (data2) => {
             ChangesTable = data2;
@@ -224,6 +232,7 @@ io.on("connection", (socket) => {
                         setDeck();
                         setCard(user);
                         DealerCards();
+                        RoundWinner(userCard,DealerCard);
                         socket.emit("cardDistribution", userCard);
                         socket.broadcast.emit("cardDistribution", userCard);
                         socket.emit("DisplayAllPlayBtn");
@@ -247,8 +256,8 @@ io.on("connection", (socket) => {
                             }
                             if(Timer==10)
                             {
-                                socket.emit("SendFivethCardToDealer",DealerCard.card4);
-                                socket.broadcast.emit("SendFivethCardToDealer",DealerCard.card4);
+                                socket.emit("SendFivethCardToDealer",DealerCard.card5);
+                                socket.broadcast.emit("SendFivethCardToDealer",DealerCard.card5);
 
                             }
                             
