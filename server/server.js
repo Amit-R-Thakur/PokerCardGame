@@ -242,6 +242,28 @@ function IsFlushOrNot(Symbol)
     }
     return 0;
 }
+//Function for Check card is in sequance or Not.............
+function IsSequance(Ranks)
+{
+    let NewRanks=[];
+    Ranks.forEach((elm)=>{NewRanks.push(Number(elm))});
+    let sortedRanks=NewRanks.sort();
+    let con=true;
+    for(let i=0;i<3;i++)
+    {
+        console.log(sortedRanks[i+1]);
+            if(sortedRanks[i+1]!=sortedRanks[i]+1)
+            {
+                con=false;
+                break;
+            }
+    }
+    if(con)
+    {
+        return 6;
+    }
+    return 0;
+}
 
 
 
