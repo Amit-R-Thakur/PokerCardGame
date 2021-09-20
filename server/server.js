@@ -30,6 +30,7 @@ let deck = [];
 //     Hearts,Clubs,Diamonds,Spades
 let symbol = ["H", "C", "D", "S"];
 let Ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+let WinnerRanks=["Royal Flush","Pure Sequence","Four Of Kind","Full House","Flush","Sequence","Three of Kind","Two Pair","One Pair","High Card"];
 //Function For set Deck.......
 function setDeck()
 {
@@ -62,6 +63,7 @@ let bookedImage = {};
 let userCard = [];
 let DealerCard={};
 let BetCoinByuser={};
+let WinningCoin=0;
 
 //Function For Confirm Who Is Winner........
 function RoundWinner(userCard,DealerCard)
@@ -92,10 +94,28 @@ function RoundWinner(userCard,DealerCard)
        Symbol.push(elm["card5"].charAt(1));
        Symbol.push(elm["card6"].charAt(1));
        Symbol.push(elm["card7"].charAt(1));
+       let tempObj={};
+       tempObj["userId"]=elm["userId"];
+       tempObj["Rank"]=getingResult(RanksTemp,Symbol);
+       userResult.push(tempObj);
 
 
 
-     
+     //Function For Geting Result..............
+     function getingResult(RanksTemp,Symbol)
+     {
+         if(IsRoyalFlush(RanksTemp,Symbol))return 1;
+         else if(IsStraightFlushAndPureSequenceOrNot(RanksTemp,Symbol))return 2;
+         else if(FourOfKindOrNot(RanksTemp)) return 3;
+         else if(IsFullHouseOrNot(RanksTemp))return 4;
+         else if(IsFlushOrNot(Symbol)) return 5;
+         else if(IsSequance(RanksTemp)) return 6;
+         else if(IsThreeOfKind(RanksTemp)) return 7;
+         else if(IsTwoPair(RanksTemp)) return 8;
+         else if(IsOnePair(RanksTemp)) return 9;
+         else return 10;
+
+     }
 
 
 
@@ -234,19 +254,24 @@ function IsFlushOrNot(Symbol)
     for(let i=0;i<Symbol.length;i++)
     {
         let count=0;
-        for(let j=0;j<Symbol.length;j++)
+        
+        for(let j=i;j<Symbol.length;j++)
         {
+            
             if(Symbol[i]==Symbol[j])
             {
+                
                 count++;
             }
 
         }
+       
         if(count==5)
         {
             return 5;
         }
     }
+   
     return 0;
 }
 //Function for Check card is in sequance or Not.............
@@ -258,7 +283,7 @@ function IsSequance(Ranks)
     let con=true;
     for(let i=0;i<3;i++)
     {
-        console.log(sortedRanks[i+1]);
+       
             if(sortedRanks[i+1]!=sortedRanks[i]+1)
             {
                 con=false;
@@ -298,7 +323,7 @@ function IsTwoPair(Ranks)
     for(let i=0;i<Ranks.length;i++)
     {
         let Count=0;
-        for(let j=0;j<Ranks.length;j++)
+        for(let j=i;j<Ranks.length;j++)
         {
             if(Ranks[i]==Ranks[j])
             {
@@ -354,14 +379,27 @@ function IsHighCard(RanksTemp)
      let HighRank=IndxNum[IndxNum.length-1];
      return Ranks[HighRank];
 
-}
-
-
-
-
-
-       
+}   
     })
+    return userResult;
+}
+//Function For Deside Final Winner..............
+function CnfWinner(Winner)
+{
+    let Rank=[];
+    for(let i=0;i<Winner.length;i++)
+    {
+        Rank.push(Winner[i].Rank);
+    }
+    Rank=Rank.sort((a,b)=>a-b);
+    for(let i=0;i<Winner.length;i++)
+    {
+       if( Winner[i].Rank==Rank[0])
+       {
+           return {"userId":Winner[i].userId,"Rank":Rank[0]};
+       }
+    }
+
 }
 
 //Function For set Card For User...........
@@ -377,7 +415,11 @@ function setCard(user) {
 
 
     }
-
+}
+//Function for delete user Card............
+function deleteUserCard()
+{
+  userCard.splice(0,userCard.length);
 }
 //Function For set Dealer Card............
 function DealerCards()
@@ -411,6 +453,7 @@ io.on("connection", (socket) => {
 
         console.log(`${Name} Joined`);
         socket.emit("userJoin", Name);
+       
         if (start == true) {
             let msg = "please Wait....";
             socket.emit("gameStartedOrNot", msg,false);
@@ -426,6 +469,11 @@ io.on("connection", (socket) => {
 
         user[socket.id] = Name;
         socket.emit("sendUser", user);
+        if(Object.keys(user).length <3)
+        {
+            socket.emit("waitOneMore", `please Wait For ${3-Object.keys(user).length} more people to Start Game`);
+
+        }
 
 
         let ChangesTable;
@@ -445,10 +493,17 @@ io.on("connection", (socket) => {
 
         });
         socket.on("LetsStartGame", () => {
-            if (Object.keys(user).length > 1) {
+            play();
+            function play()
+            {
+                
+            if (Object.keys(user).length > 2) {
+
 
                 let time = 5;
                 let send;
+                WinningCoin=Object.keys(user).length*200;
+                
 
                 if (start == false) {
                     start = true;
@@ -460,17 +515,26 @@ io.on("connection", (socket) => {
                     socket.emit("sendTime", time);
                     socket.broadcast.emit("sendTime", time);
                     if (time == 0) {
+                         socket.emit("DisplayAllPlayBtn");
+                        socket.broadcast.emit("DisplayAllPlayBtn");
+                        
+                        socket.emit("CollectingBet");
+                        socket.broadcast.emit("CollectingBet");
+                        
+                        socket.emit("SetStartingBetCoinToDealer",Object.keys(user).length*200);
+                        socket.broadcast.emit("SetStartingBetCoinToDealer",Object.keys(user).length*200);
+                        
+
                         socket.emit("sendGameStartMessage", time);
                         socket.broadcast.emit("sendGameStartMessage");
                         clearInterval(send);
                         setDeck();
                         setCard(user);
                         DealerCards();
-                        RoundWinner(userCard,DealerCard);
+                        
                         socket.emit("cardDistribution", userCard);
                         socket.broadcast.emit("cardDistribution", userCard);
-                        socket.emit("DisplayAllPlayBtn");
-                        socket.broadcast.emit("DisplayAllPlayBtn");
+                       
                         let Timer=30;
                         let ResultTimer=setInterval(ResultTimerFunction,1000);
                         function ResultTimerFunction()
@@ -497,9 +561,51 @@ io.on("connection", (socket) => {
                             
                             if(Timer==0)
                             {
-                                
-                                start = false;
+                                let Winner=RoundWinner(userCard,DealerCard);
+                                //Function for Confirm Winner ..........
+                               let Win=(CnfWinner(Winner));
+                               let msg=WinnerRanks[Win.Rank-1];
+                               let Name=user[Win.userId];
+                               socket.emit("winnerIs",{"UserId":Win.userId,"msg":msg,"Name":Name});
+                               socket.broadcast.emit("winnerIs",{"UserId":Win.userId,"msg":msg,"Name":Name});
+                               socket.emit("ShowAllCard",userCard);
+                               socket.broadcast.emit("ShowAllCard",userCard);
+                               socket.emit("WinningCoinIs",{"userId":Win.userId,"coin":WinningCoin});
+                               socket.broadcast.emit("WinningCoinIs",{"userId":Win.userId,"coin":WinningCoin});
+                               console.log(WinningCoin);
+                               let wait=setInterval(restart,1000);
+                               let tm=10;
+                               function restart()
+                               {
+
+                                   socket.emit("sendRestartTime",tm);
+                                   socket.broadcast.emit("sendRestartTime",tm);
+                                   if(tm==0)
+                                   {
+                                    WinningCoin=0;
+                                    socket.emit("RemoveAllCard",userCard);
+                                    socket.broadcast.emit("RemoveAllCard",userCard);
+                                    socket.emit("RemoveDealerCard",userCard);
+                                    socket.broadcast.emit("RemoveDealerCard");
+                                    
+
+                                    
+                                    clearInterval(wait);
+                                    let msg="";
+                                    socket.emit("gameStartedOrNot", msg,true);
+                                    socket.broadcast.emit("gameStartedOrNot", msg,true);
+                                    start = false;
                                 ClearDeck();
+                                DeleteDealerCards();
+                                deleteUserCard();
+                                     play();
+                                   }
+                                   tm--;
+                                   
+                               }
+                              
+                               
+                                
                                 clearInterval(ResultTimer);
 
                             }
@@ -513,6 +619,7 @@ io.on("connection", (socket) => {
 
 
             }
+        }
 
         });
 
@@ -525,6 +632,7 @@ io.on("connection", (socket) => {
     //Function For Manage Coin
    
     socket.on("BetCoin",(data)=>{
+        WinningCoin=data.BetCoin+WinningCoin;
         
         if(BetCoinByuser[data.userId])
         {

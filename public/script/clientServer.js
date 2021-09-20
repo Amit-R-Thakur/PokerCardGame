@@ -9,6 +9,8 @@ let backSideOfCardIs = "../CardImage/blue_back.png";
 let MyChangesTable;
 let MyChangesCard1;
 let MyChangesCard2;
+  
+
 
 //Function For reaturn random Table..........
 function RandomTable() {
@@ -27,6 +29,9 @@ function RandomProfileImage() {
 
 //Function for Manage Coin (get Coin or Set Coin To Loacal Storage)
 document.addEventListener("DOMContentLoaded", () => {
+
+
+
     function setCoinToLocalStorage() {
         let coin = localStorage.getItem("MyPokerGameCoin");
         if (coin == null) {
@@ -71,6 +76,8 @@ function Message(msg) {
     let mainBox = document.querySelector(".msgBox");
     mainBox.innerHTML = `<h2>${msg}</h2>`;
 }
+
+
 //Function For set Time For Starting game......
 function setTime(msg) {
     let spn = document.querySelector("#TimerMsg");
@@ -149,10 +156,18 @@ socket.emit("RecevedCoin",socket.id,BetCoin);
 
 
 socket.on("userJoin", (data) => {
+    console.log("join");
+    socket.on("waitOneMore",(data)=>{
+        
+        setTimeout(()=>{
+            alert(data);
+
+        },3000)
+      
+    })
+    
     socket.on("gameStartedOrNot", (data,data2) => {
-        console.log(data);
         sendGameStartMessage(data);
-        console.log(data2);
         inGame=data2;
     
     })
@@ -175,8 +190,6 @@ socket.on("userJoin", (data) => {
                 let cardLocation = returnCardId("t5");
                 let card1 = ReturnCardImageUrl(elm.card1);
                 let card2 = ReturnCardImageUrl(elm.card2);
-                console.log(cardLocation);
-                console.log(cardLocation.card1);
                 document.querySelector(`#Mycard1`).style.backgroundImage = `url("${card1}")`;
                 document.querySelector(`#Mycard2`).style.backgroundImage = `url("${card2}")`;
 
@@ -324,7 +337,6 @@ socket.on("ResultTimerFunction",(data)=>{
 socket.on("SendThreeCardToDealer",(card1,card2,card3)=>{
     if(inGame==true)
     {
-    console.log(card1);
    let card1Url=ReturnCardImageUrl(card1);
    let card2Url=ReturnCardImageUrl(card2);
    let card3Url=ReturnCardImageUrl(card3);
@@ -354,6 +366,115 @@ socket.on("SendFivethCardToDealer",(card5)=>{
     }
 
 })
+
+socket.on("winnerIs",(data)=>{
+    if(data.UserId==socket.id)
+    {
+        let msg=`You are Winner!(${data.msg})`;
+        Message(msg);
+    }
+    else
+    {
+        let msg=`${data.Name} is Winner!(${data.msg})`;
+        Message(msg);
+
+    }
+});
+
+socket.on("ShowAllCard",(data)=>{
+    console.log("showAll card");
+    data.forEach((elm) => {
+        if (elm.userId != socket.id) {
+            let card1 = ReturnCardImageUrl(elm.card1);
+            let card2 = ReturnCardImageUrl(elm.card2);
+            if (elm.table == "table5") {
+                document.querySelector(`#${MyChangesCard1}`).style.backgroundImage = `url("${card1}")`;
+                document.querySelector(`#${MyChangesCard2}`).style.backgroundImage = `url("${card2}")`;
+
+
+            }
+            else {
+                let table = returnTableClass(elm.table);
+                let cardLocation = returnCardId(table);
+                document.querySelector(`#${cardLocation.card1}`).style.backgroundImage = `url("${card1}")`;
+                document.querySelector(`#${cardLocation.card2}`).style.backgroundImage = `url("${card2}")`;
+            }
+
+        }
+
+})
+})
+socket.on("RemoveAllCard",(data)=>{
+    console.log(data);
+    
+    data.forEach((elm) => {
+        
+        if (elm.userId == socket.id) {
+            
+            document.querySelector(`#Mycard1`).style.removeProperty("background-image");
+            document.querySelector(`#Mycard2`).style.removeProperty("background-image");
+            console.log("RemoveAllCard");
+
+        }
+        else {
+            if (elm.table == "table5") {
+                document.querySelector(`#${MyChangesCard1}`).style.removeProperty("background-image") ;
+                document.querySelector(`#${MyChangesCard2}`).style.removeProperty("background-image");
+
+
+            }
+            else {
+                let table = returnTableClass(elm.table);
+                let cardLocation = returnCardId(table);
+                document.querySelector(`#${cardLocation.card1}`).style.removeProperty("background-image");
+                document.querySelector(`#${cardLocation.card2}`).style.removeProperty("background-image");
+            }
+
+        }
+
+    })
+})
+
+socket.on("RemoveDealerCard",()=>{
+    document.querySelector("#dealerCard1").style.removeProperty("background-image");
+    document.querySelector("#dealerCard2").style.removeProperty("background-image");
+    document.querySelector("#dealerCard3").style.removeProperty("background-image");
+    document.querySelector("#dealerCard4").style.removeProperty("background-image");
+    document.querySelector("#dealerCard5").style.removeProperty("background-image");
+
+});
+socket.on("sendRestartTime",(tm)=>{
+    if(inGame==true)
+    {
+    let msg=`game Restart In ${tm}`;
+    if(tm==0)
+    msg="game restarted";
+    setTime(msg);
+    }
+})
+socket.on("CollectingBet",()=>{
+    if(inGame==true)
+    {
+        let Mycoin=localStorage.getItem("MyPokerGameCoin");
+            Mycoin=Mycoin-200;
+        localStorage.setItem("MyPokerGameCoin",Mycoin);
+        document.querySelector("#MyCoin").innerText =localStorage.getItem("MyPokerGameCoin");
+        
+    }
+});
+socket.on("SetStartingBetCoinToDealer",(data)=>{
+    document.querySelector("#dealer").innerText=data;
+})
+socket.on("WinningCoinIs",(data)=>{
+    if(data.userId==socket.id)
+    {
+        let Mycoin=Number(localStorage.getItem("MyPokerGameCoin"))+Number(data.coin);
+        localStorage.setItem("MyPokerGameCoin",Mycoin);
+        document.querySelector("#MyCoin").innerText =localStorage.getItem("MyPokerGameCoin");
+
+    }
+})
+
 
 
 

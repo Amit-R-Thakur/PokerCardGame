@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         coinDiv.classList.add("DealerCoinDiv");
         let coin=document.createElement("div");
         coin.classList.add("coindiv");
-        let dealerCoin=`<h1>${rupeesIcon}<span id='dealer'>1000</span></h1>`;
+        let dealerCoin=`<h1>${rupeesIcon}<span id='dealer'></span></h1>`;
         coin.innerHTML=dealerCoin;
         coinDiv.appendChild(coin);
         DealerMainDiv.appendChild(coinDiv);
@@ -268,66 +268,13 @@ document.addEventListener("DOMContentLoaded",()=>{
         mainDiv.appendChild(DealerMainDiv);
     }
     
-  
-///JAVAScript Part Started................
 
 
 
 
 
-//Fuction For Set Card To Each Player
-function SetCardToPlayer()
-{
-    let Card1=1;
-    let Card2=2;
-    for(let i=0;i<4;i++)
-    {
-        let Random1=ReturnCardImageUrl(ReturnRandomCard());
-        let Random2=ReturnCardImageUrl(ReturnRandomCard());
-        let playerCard1=document.querySelector(`#p${i+1}card${Card1}`);
-        playerCard1.style.backgroundImage=`url("${Random1}")`;
-        playerCard1.style.backgroundSize="100% 100%";
-        let playerCard2=document.querySelector(`#p${i+1}card${Card2}`);
-        playerCard2.style.backgroundImage=`url("${Random2}")`;
-        playerCard2.style.backgroundSize="100% 100%";
-
-    }
-}
-// function For set Card For Self...........
-function SetCardForSelf()
-{
-    let Mycard1=document.querySelector("#Mycard1");
-    let Mycard2=document.querySelector("#Mycard2");
-    Mycard1.style.backgroundImage=`url("${ReturnCardImageUrl(ReturnRandomCard())}")`;
-    Mycard1.style.backgroundSize="100% 100%";
-    Mycard2.style.backgroundImage=`url("${ReturnCardImageUrl(ReturnRandomCard())}")`;
-    Mycard2.style.backgroundSize="100% 100%";
-}
-
-//Function For Set Card For Dealer..............
-function SetCardForDealer()
-{
-    for(i=0;i<5;i++)
-    {
-        let DealerCard=document.querySelector(`#dealerCard${i+1}`);
-        DealerCard.style.backgroundImage=`url("${ReturnCardImageUrl(ReturnRandomCard())}")`;
-        DealerCard.style.backgroundSize="100% 100%";
-
-    }
-
-}
 
 
-//Function For Set Card...............
-function setCard()
-{
-    
-SetCardToPlayer();
-SetCardForSelf();
-SetCardForDealer();
-
-}
-//setCard();
 
 
 
