@@ -403,8 +403,8 @@ background: linear-gradient(90deg, rgba(255,0,198,1) 0%, rgba(100,121,9,0.975694
 .msgBox
 {
     position: absolute;
-    left:42%;
-    right: 40%;
+    left:41%;
+    right: 39%;
     top:38%;
     bottom: 57%;
     background-color: rgba(0, 0, 0, 0.472); padding-left:1%;
